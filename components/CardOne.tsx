@@ -3,18 +3,14 @@ import Image from "next/image";
 import React from "react";
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { log } from "console";
 
 export function CardOne() {
   const [movies, setMovies] = useState<any[]>([]);
   const [currentMovie, setCurrentMovie] = useState<any>();
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     let page = Math.floor(Math.random() * (100 - 1) + 1);
-    console.log(page);
-    console.log(movies);
-
-    console.log(currentMovie);
 
     const options = {
       method: "GET",
@@ -30,15 +26,14 @@ export function CardOne() {
       axios
         .request(options)
         .then(function (response) {
-          //   console.log(response.data);
-          let resultSize = Math.floor(Math.random() * (19 - 3) + 3);
+          let resultSize = Math.floor(Math.random() * (19 - 3) + 3); //selecting a random pointer for window end
           setMovies(
             movies.concat(
-              response.data.results.slice(resultSize - 3, resultSize)
+              response.data.results.slice(resultSize - 3, resultSize) // taking 3 data from the window(size 3)
             )
           );
           if (!currentMovie) {
-            setCurrentMovie(response.data.results[0]);
+            setCurrentMovie(response.data.results[0]); //setting the current movie for the first time
           }
         })
         .catch(function (error) {
@@ -52,11 +47,14 @@ export function CardOne() {
   }, [movies, currentMovie]);
 
   const handleClick = () => {
+    document.getElementById("hero")?.classList.add("opacity-0");
+    console.log(movies);
     setCurrentMovie(movies[1]);
     setMovies(movies.slice(1, movies.length));
-    console.log(currentMovie);
+    // setLoading(true);
   };
 
+  // adding similar recommended movies when the movie is liked
   const handleLike = () => {
     const id = currentMovie.id;
 
@@ -74,7 +72,10 @@ export function CardOne() {
       .request(options)
       .then(function (response) {
         console.log(response.data);
-        setMovies(movies.concat(response.data.results.slice(0, 3)));
+        let resultSize = Math.floor(Math.random() * (19 - 3) + 3);
+        movies.concat(
+          response.data.results.slice(resultSize - 3, resultSize) // taking 3 data from the window(size 3)
+        );
       })
       .catch(function (error) {
         console.error(error);
@@ -83,15 +84,21 @@ export function CardOne() {
 
   return (
     <div className="">
-      <div className="flex flex-col justify-center items-center">
-        <div className="relative h-[350px] w-[250px] rounded-lg shadow-lg bg-slate-500">
+      <div
+        id="hero"
+        className="flex flex-col justify-center items-center transition-opacity opacity-0 duration-200 "
+      >
+        <div className="relative h-[350px] w-[250px] rounded-lg shadow-lg bg-slate-500 ">
           {currentMovie && (
             <Image
               src={`https://image.tmdb.org/t/p/original${currentMovie.poster_path}`}
               alt=""
-              className="z-0 h-full w-full rounded-md object-cover"
+              className="z-0 h-full w-full rounded-md object-cover "
+              onLoadingComplete={() =>
+                document.getElementById("hero")?.classList.remove("opacity-0")
+              }
               fill={true}
-              loading="eager"
+              priority={true}
             />
           )}
         </div>
@@ -99,6 +106,7 @@ export function CardOne() {
           {currentMovie && currentMovie.title}
         </div>
       </div>
+
       <div className="flex justify-between">
         <button
           className="my-4 p-2 text-xl border-2 border-sky-500"
