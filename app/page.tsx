@@ -11,11 +11,11 @@ export default function Home() {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    let page = Math.floor(Math.random() * (100 - 1) + 1);
+    let page = Math.floor(Math.random() * (200 - 1) + 1);
 
     const options = {
       method: "GET",
-      url: "https://api.themoviedb.org/3/discover/movie?include_adult=false&include_video=false&language=en-US&page=89&sort_by=popularity.desc&vote_average.gte=7&with_original_language=en",
+      url: `https://api.themoviedb.org/3/discover/movie?include_adult=false&include_video=false&language=en-US&page=${page}&sort_by=popularity.desc&vote_average.gte=7&with_original_language=en`,
       headers: {
         accept: "application/json",
         Authorization:
