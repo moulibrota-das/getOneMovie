@@ -16,7 +16,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
+    <html lang="en" className="snap-mandatory snap-y">
       <body className={inter.className}>
         <Navbar />
         {children}

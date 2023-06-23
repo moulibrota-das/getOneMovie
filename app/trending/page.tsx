@@ -37,7 +37,7 @@ function Page() {
       {movies &&
         movies.map((item: any) => (
           <div
-            className={`flex flex-col justify-center items-center  my-4 h-screen`}
+            className={`flex flex-col justify-center items-center  my-4 h-screen snap-start`}
             key={item.id}
           >
             <div
