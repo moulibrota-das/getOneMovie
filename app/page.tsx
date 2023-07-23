@@ -8,7 +8,7 @@ import { useEffect, useState } from "react";
 export default function Home() {
   const [movies, setMovies] = useState<any[]>([]);
   const [currentMovie, setCurrentMovie] = useState<any>();
-  const [loading, setLoading] = useState(false);
+  const [textLoading, setTextLoading] = useState(false);
 
   useEffect(() => {
     let page = Math.floor(Math.random() * (200 - 1) + 1);
@@ -48,8 +48,8 @@ export default function Home() {
   }, [movies, currentMovie]);
 
   const handleClick = () => {
+    setTextLoading(false);
     document.getElementById("hero")?.classList.add("opacity-0");
-    console.log(movies);
     setCurrentMovie(movies[1]);
     setMovies(movies.slice(1, movies.length));
     // setLoading(true);
@@ -84,27 +84,29 @@ export default function Home() {
   };
 
   return (
-    <div className="">
+    <div className="my-auto h-screen flex flex-col py-10">
       <div
         id="hero"
-        className="flex flex-col justify-center items-center transition-opacity opacity-0 duration-200 "
+        className="mt-20 flex flex-col justify-center items-center transition-opacity opacity-0 duration-200 "
       >
-        <div className="relative h-[350px] w-[250px] rounded-lg shadow-lg bg-slate-500 ">
+        <div className="relative  rounded-lg shadow-md bg-slate-500 ">
           {currentMovie && (
             <Image
               src={`https://image.tmdb.org/t/p/original${currentMovie.poster_path}`}
+              width={200}
+              height={280}
               alt=""
-              className="z-0 h-full w-full rounded-md object-cover "
-              onLoadingComplete={() =>
-                document.getElementById("hero")?.classList.remove("opacity-0")
-              }
-              fill={true}
+              className="z-0  rounded-md object-cover "
+              onLoadingComplete={() => {
+                document.getElementById("hero")?.classList.remove("opacity-0");
+                setTextLoading(true);
+              }}
               priority={true}
             />
           )}
         </div>
-        <div className="my-4 text-2xl font-medium">
-          {currentMovie && currentMovie.title}
+        <div className="my-4 text-md text-slate-600 font-medium">
+          {currentMovie && textLoading && currentMovie.title}
         </div>
       </div>
 

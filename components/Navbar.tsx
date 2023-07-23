@@ -6,12 +6,12 @@ import Image from "next/image";
 
 const menuItems = [
   {
-    name: "Home",
-    href: "#",
+    name: "Discover",
+    href: "/",
   },
   {
-    name: "About",
-    href: "#",
+    name: "Trending",
+    href: "/trending",
   },
   {
     name: "Contact",
@@ -27,7 +27,7 @@ export function Navbar() {
   };
 
   return (
-    <div className="relative w-full bg-white">
+    <div className="absolute top-0 left-0 z-2 h-10 w-full bg-white">
       <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-2 sm:px-6 lg:px-8">
         <div className="inline-flex items-center space-x-2">
           <span>
