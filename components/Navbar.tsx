@@ -3,6 +3,7 @@
 import React from "react";
 import { Menu, X, ChevronDown, ChevronRight } from "lucide-react";
 import Image from "next/image";
+import useAuth from "@/context/useAuth";
 
 const menuItems = [
   {
@@ -21,7 +22,8 @@ const menuItems = [
 
 export function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
-
+  const { authStatus } = useAuth();
+  console.log(authStatus);
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
@@ -64,17 +66,19 @@ export function Navbar() {
           </ul>
         </div>
 
-        <div className="ml-2 mt-2 hidden lg:block">
-          <span className="relative inline-block">
-            <Image
-              className="h-10 w-10 rounded-full"
-              src="https://overreacted.io/static/profile-pic-c715447ce38098828758e525a1128b87.jpg"
-              alt="Dan_Abromov"
-              fill={true}
-            />
-            <span className="absolute bottom-0 right-0 block h-2.5 w-2.5 rounded-full bg-green-600 ring-2 ring-white"></span>
-          </span>
-        </div>
+        {authStatus && (
+          <div className="ml-2 mt-2 hidden lg:block">
+            <span className="relative inline-block">
+              <Image
+                className="h-10 w-10 rounded-full"
+                src="https://overreacted.io/static/profile-pic-c715447ce38098828758e525a1128b87.jpg"
+                alt="Dan_Abromov"
+                fill={true}
+              />
+              <span className="absolute bottom-0 right-0 block h-2.5 w-2.5 rounded-full bg-green-600 ring-2 ring-white"></span>
+            </span>
+          </div>
+        )}
         <div className="ml-2 lg:hidden">
           <Menu onClick={toggleMenu} className="h-6 w-6 cursor-pointer" />
         </div>
@@ -112,23 +116,25 @@ export function Navbar() {
                     ))}
                   </nav>
                 </div>
-                <div className="ml-3 mt-4 flex items-center space-x-2">
-                  <Image
-                    className="inline-block h-10 w-10 rounded-full"
-                    src="https://overreacted.io/static/profile-pic-c715447ce38098828758e525a1128b87.jpg"
-                    alt="Dan_Abromov"
-                    height={10}
-                    width={10}
-                  />
-                  <span className="flex flex-col">
-                    <span className="text-sm font-medium text-gray-900">
-                      Dan Abromov
+                {authStatus && (
+                  <div className="ml-3 mt-4 flex items-center space-x-2">
+                    <Image
+                      className="inline-block h-10 w-10 rounded-full"
+                      src="https://overreacted.io/static/profile-pic-c715447ce38098828758e525a1128b87.jpg"
+                      alt="Dan_Abromov"
+                      height={10}
+                      width={10}
+                    />
+                    <span className="flex flex-col">
+                      <span className="text-sm font-medium text-gray-900">
+                        Dan Abromov
+                      </span>
+                      <span className="text-sm font-medium text-gray-500">
+                        @dan_abromov
+                      </span>
                     </span>
-                    <span className="text-sm font-medium text-gray-500">
-                      @dan_abromov
-                    </span>
-                  </span>
-                </div>
+                  </div>
+                )}
               </div>
             </div>
           </div>

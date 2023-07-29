@@ -4,6 +4,9 @@ import Image from "next/image";
 import React from "react";
 import axios from "axios";
 import { useEffect, useState } from "react";
+import { Navbar } from "@/components/Navbar";
+import useAuth from "@/context/useAuth";
+import appwriteService from "@/appwrite/config";
 
 export default function Home() {
   const [movies, setMovies] = useState<any[]>([]);
@@ -84,46 +87,50 @@ export default function Home() {
   };
 
   return (
-    <div className="my-auto h-screen flex flex-col py-10">
-      <div
-        id="hero"
-        className="mt-20 flex flex-col justify-center items-center transition-opacity opacity-0 duration-200 "
-      >
-        <div className="relative  rounded-lg shadow-md bg-slate-500 ">
-          {currentMovie && (
-            <Image
-              src={`https://image.tmdb.org/t/p/original${currentMovie.poster_path}`}
-              width={200}
-              height={280}
-              alt=""
-              className="z-0  rounded-md object-cover "
-              onLoadingComplete={() => {
-                document.getElementById("hero")?.classList.remove("opacity-0");
-                setTextLoading(true);
-              }}
-              priority={true}
-            />
-          )}
+    <>
+      <div className="my-auto h-screen flex flex-col py-10">
+        <div
+          id="hero"
+          className="mt-20 flex flex-col justify-center items-center transition-opacity opacity-0 duration-200 "
+        >
+          <div className="relative  rounded-lg shadow-md bg-slate-500 ">
+            {currentMovie && (
+              <Image
+                src={`https://image.tmdb.org/t/p/original${currentMovie.poster_path}`}
+                width={200}
+                height={280}
+                alt=""
+                className="z-0  rounded-md object-cover "
+                onLoadingComplete={() => {
+                  document
+                    .getElementById("hero")
+                    ?.classList.remove("opacity-0");
+                  setTextLoading(true);
+                }}
+                priority={true}
+              />
+            )}
+          </div>
+          <div className="my-4 text-md text-slate-600 font-medium">
+            {currentMovie && textLoading && currentMovie.title}
+          </div>
         </div>
-        <div className="my-4 text-md text-slate-600 font-medium">
-          {currentMovie && textLoading && currentMovie.title}
-        </div>
-      </div>
 
-      <div className="flex justify-between">
-        <button
-          className="my-4 p-2 text-xl border-2 border-sky-500"
-          onClick={handleLike}
-        >
-          Like
-        </button>
-        <button
-          className="my-4 p-2 text-xl border-2 border-sky-500"
-          onClick={handleClick}
-        >
-          Next
-        </button>
+        <div className="flex justify-between">
+          <button
+            className="my-4 p-2 text-xl border-2 border-sky-500"
+            onClick={handleLike}
+          >
+            Like
+          </button>
+          <button
+            className="my-4 p-2 text-xl border-2 border-sky-500"
+            onClick={handleClick}
+          >
+            Next
+          </button>
+        </div>
       </div>
-    </div>
+    </>
   );
 }
